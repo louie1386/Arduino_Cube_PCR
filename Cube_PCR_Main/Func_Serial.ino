@@ -1,7 +1,9 @@
 void Serial_setup() {
   Serial.begin(9600);
   Serial.println("");
-  Serial.println("Start/Reset");
+  Serial.print("Start/Reset (Version: ");
+  Serial.print(Version);
+  Serial.println(")");
 }
 
 void serial_log() {
@@ -24,17 +26,19 @@ void serial_log() {
     serial_LogDoubleAlign(HeatingTime_Counter[i]);
     Serial.println(" sec");
   }
-  Serial.print("PCB Temp: ");
+  Serial.print("Lower Temp: ");
   Serial.println(Temp[4]);
+  Serial.print("Upper Temp: ");
+  Serial.println(Temp[5]);
   Serial.println("");
 }
 
-void serial_LogDoubleAlign(double value){
+void serial_LogDoubleAlign(double value) {
   if (value < 10)
-      Serial.print("  ");
-    else if (value < 100)
-      Serial.print(" ");
-    Serial.print(value);
+    Serial.print("  ");
+  else if (value < 100)
+    Serial.print(" ");
+  Serial.print(value);
 }
 
 void serial_RXD() {

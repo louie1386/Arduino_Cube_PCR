@@ -11,12 +11,12 @@ void  Timer_Mux() {
 }
 
 void  Timer_Log() {
-  Led_OFF();
+  Led_OFF(Mux_SIG);
   serial_RXD();
   if (LogPrint_en)
     serial_log();
   if (aTune_fin)
-    Led_ON();
+    Led_ON(Mux_SIG);
 }
 
 void Timer_sec() {
@@ -61,5 +61,7 @@ void Timer_sec() {
     Power_Delay--;
 
   Temp[4] = Temp_avg(TIC4, SampleTimes, 0);
+  Temp[5] = Temp_avg(TIC5, SampleTimes, 0);
+  ReadyLed_chk();
 }
 

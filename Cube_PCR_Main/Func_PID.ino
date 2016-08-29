@@ -19,24 +19,25 @@ void PID_setup() {
   aTune.SetLookbackSec((int)aTuneLookBack);
 }
 
-bool  PID_autotune() {
+void  PID_autotune() {
   if (Power_Delay == 0 && aTune_en == false) {
-    aTune_en = true;
-    if (Temp[0] > aTune_en_Temp) {
-      for (int i = 0; i < 4; i++) {
-        Kp[i] = Kp_0;
-        Ki[i] = Ki_0;
-        Kd[i] = Kd_0;
+    if (Temp[aTune_well] > aTune_en_Temp) {
+      if (!aTune_mode) {
+        aTune_en = true;
+        PID0.SetTunings(Kp[0] = Kp_0, Ki[0] = Ki_0, Kd[0] = Kd_0);
+        PID1.SetTunings(Kp[1] = Kp_1, Ki[1] = Ki_1, Kd[1] = Kd_1);
+        PID2.SetTunings(Kp[2] = Kp_2, Ki[2] = Ki_2, Kd[2] = Kd_2);
+        PID3.SetTunings(Kp[3] = Kp_3, Ki[3] = Ki_3, Kd[3] = Kd_3);
+        aTune_fin = true;
+        Serial.println("Default PID!");
+        aTune_Time = 0;
       }
-      PID0.SetTunings(Kp[0], Ki[0], Kd[0]);
-      PID1.SetTunings(Kp[1], Ki[1], Kd[1]);
-      PID2.SetTunings(Kp[2], Ki[2], Kd[2]);
-      PID3.SetTunings(Kp[3], Ki[3], Kd[3]);
-      aTune_fin = true;
-      Serial.println("Default PID!");
-      aTune_Time = 0;
-      return true;
+      else {
+        aTune_en = false;
+      }
     }
+    else
+      aTune_en = true;
   }
 
   byte val = (aTune.Runtime());
@@ -55,21 +56,17 @@ bool  PID_autotune() {
     Serial.print(aTune_Time);
     Serial.println("sec)");
     aTune_Time = (-1);
-    return true;
   }
-  else
-    return false;
 }
 
 void  PID0_Control() {
   Temp[0] = Temp_avg(TIC0, SampleTimes, Temp_diff[0]);
-  if (!(PID_autotune()))
-    PID0.Compute();
+  PID0.Compute();
 
   if (Volt[0] < 0 || Volt[0] > 255)
     Volt[0] = 0;
 
-  if (LedRG[0])
+  if (GreLED_en[0])
     Tar[0] = 0;
 
   if (Temp[0] >= MaxTemp || Temp[0] <= 0)
@@ -84,7 +81,7 @@ void  PID1_Control() {
   if (Volt[1] < 0 || Volt[1] > 255)
     Volt[1] = 0;
 
-  if (LedRG[1])
+  if (GreLED_en[1])
     Tar[1] = 0;
 
   if (Temp[1] >= MaxTemp || Temp[1] <= 0)
@@ -99,7 +96,7 @@ void  PID2_Control() {
   if (Volt[2] < 0 || Volt[2] > 255)
     Volt[2] = 0;
 
-  if (LedRG[2])
+  if (GreLED_en[2])
     Tar[2] = 0;
 
   if (Temp[2] >= MaxTemp || Temp[2] <= 0)
@@ -114,7 +111,7 @@ void  PID3_Control() {
   if (Volt[3] < 0 || Volt[3] > 255)
     Volt[3] = 0;
 
-  if (LedRG[3])
+  if (GreLED_en[3])
     Tar[3] = 0;
 
   if (Temp[3] >= MaxTemp || Temp[3] <= 0)
