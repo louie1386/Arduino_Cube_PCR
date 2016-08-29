@@ -25,22 +25,22 @@ void Mux_func(int pin) {
   Mux_SIG_setup();
   switch (pin) {
     case  0:
-      button_check_0();
+      button_check(0, MuxButtonPin0, HeatingTime_0, PreHeatingTemp_0, AtuneTemp_0);
       Led_change(MuxRedLedPin0, MuxGreLedPin0, LedRG[0], aTune_fin);
       PID0_Control();
       break;
     case  1:
-      button_check_1();
+      button_check(1, MuxButtonPin1, HeatingTime_1, PreHeatingTemp_1, AtuneTemp_1);
       Led_change(MuxRedLedPin1, MuxGreLedPin1, LedRG[1], aTune_fin);
       PID1_Control();
       break;
     case  2:
-      button_check_2();
+      button_check(2, MuxButtonPin2, HeatingTime_2, PreHeatingTemp_2, AtuneTemp_2);
       Led_change(MuxRedLedPin2, MuxGreLedPin2, LedRG[2], aTune_fin);
       PID2_Control();
       break;
     case  3:
-      button_check_3();
+      button_check(3, MuxButtonPin3, HeatingTime_3, PreHeatingTemp_3, AtuneTemp_3);
       Led_change(MuxRedLedPin3, MuxGreLedPin3, LedRG[3], aTune_fin);
       PID3_Control();
       break;

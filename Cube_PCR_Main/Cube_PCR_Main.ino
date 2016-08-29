@@ -47,8 +47,8 @@ int   button_disable_counter[4] = {0, 0, 0, 0};
 
 //Temp-----------------------
 #define TempIC_Diff_0   0
-#define TempIC_Diff_1   0
-#define TempIC_Diff_2   0
+#define TempIC_Diff_1   (-1.5)
+#define TempIC_Diff_2   (-4)
 #define TempIC_Diff_3   0
 
 #define TempIC_Type     1
@@ -70,25 +70,25 @@ bool    Temp_steady[4] =  {false, false, false, false};
 
 //PID-----------------------
 #define PIDSampleTime   100
-#define aKp   200
+#define aKp   1000
 #define aKi   0
 #define aKd   0
 
-#define Kp_0   62.07
-#define Ki_0   26.40
-#define Kd_0   36.48
+#define Kp_0   100
+#define Ki_0   0
+#define Kd_0   0
 
-#define Kp_1   62.07
-#define Ki_1   26.40
-#define Kd_1   36.48
+#define Kp_1   100
+#define Ki_1   0
+#define Kd_1   0
 
-#define Kp_2   62.07
-#define Ki_2   26.40
-#define Kd_2   36.48
+#define Kp_2   100
+#define Ki_2   0
+#define Kd_2   0
 
-#define Kp_3   62.07
-#define Ki_3   26.40
-#define Kd_3   36.48
+#define Kp_3   100
+#define Ki_3   0
+#define Kd_3   0
 
 double        Volt[4] = {0, 0, 0, 0};
 double        Kp[4] =   {aKp, aKp, aKp, aKp};
@@ -98,7 +98,7 @@ double        aTuneStep = 3000, aTuneNoise = 0.5;
 unsigned int  aTuneMode = 1, aTuneLookBack = 3;
 bool          aTune_en = false;
 bool          aTune_fin = false;
-int aTune_Time = 0;
+int           aTune_Time = 0;
 
 PID PID0(&Temp[0], &Volt[0], &Tar[0], Kp[0], Ki[0], Kd[0], DIRECT);
 PID PID1(&Temp[1], &Volt[1], &Tar[1], Kp[1], Ki[1], Kd[1], DIRECT);
@@ -116,15 +116,15 @@ PID_ATune aTune(&Temp[0], &Volt[0]);
 #define MuxButtonPin2 2
 #define MuxButtonPin3 3
 
-#define MuxGreLedPin0 8
-#define MuxGreLedPin1 9
-#define MuxGreLedPin2 10
-#define MuxGreLedPin3 11
+#define MuxGreLedPin0 12
+#define MuxGreLedPin1 13
+#define MuxGreLedPin2 14
+#define MuxGreLedPin3 15
 
-#define MuxRedLedPin0 12
-#define MuxRedLedPin1 13
-#define MuxRedLedPin2 14
-#define MuxRedLedPin3 15
+#define MuxRedLedPin0 8
+#define MuxRedLedPin1 9
+#define MuxRedLedPin2 10
+#define MuxRedLedPin3 11
 
 int Mux_Pin_Num = 0;
 
@@ -136,59 +136,59 @@ bool LedRG[4] = {false, false, false, false};
 #define HeatingTime_0       900   //PCR反應時間(含預熱時間)
 #define PreHeatingTime_0    60    //預熱時間
 #define PreHeatingTemp_0    120   //預熱溫度
-#define HeatingTemp_0       100   //PCR反應溫度
+#define HeatingTemp_0       98    //PCR反應溫度
 #define ResponseTime_0      HeatingTime_0 - PreHeatingTime_0
-#define AtuneTemp_0         HeatingTime_0
+#define AtuneTemp_0         HeatingTemp_0
 
 //Channel 2 Setting
 #define HeatingTime_1       900   //PCR反應時間(含預熱時間)
 #define PreHeatingTime_1    60    //預熱時間
 #define PreHeatingTemp_1    120   //預熱溫度
-#define HeatingTemp_1       100   //PCR反應溫度
+#define HeatingTemp_1       98    //PCR反應溫度
 #define ResponseTime_1      HeatingTime_1 - PreHeatingTime_1
-#define AtuneTemp_1         HeatingTime_1
+#define AtuneTemp_1         HeatingTemp_1
 
 //Channel 3 Setting
 #define HeatingTime_2       900   //PCR反應時間(含預熱時間)
 #define PreHeatingTime_2    60    //預熱時間
 #define PreHeatingTemp_2    120   //預熱溫度
-#define HeatingTemp_2       100   //PCR反應溫度
+#define HeatingTemp_2       98    //PCR反應溫度
 #define ResponseTime_2      HeatingTime_2 - PreHeatingTime_2
-#define AtuneTemp_2         HeatingTime_2
+#define AtuneTemp_2         HeatingTemp_2
 
 //Channel 4 Setting
 #define HeatingTime_3       900   //PCR反應時間(含預熱時間)
 #define PreHeatingTime_3    60    //預熱時間
 #define PreHeatingTemp_3    120   //預熱溫度
-#define HeatingTemp_3       100   //PCR反應溫度
+#define HeatingTemp_3       98    //PCR反應溫度
 #define ResponseTime_3      HeatingTime_3 - PreHeatingTime_3
-#define AtuneTemp_3         HeatingTime_3
+#define AtuneTemp_3         HeatingTemp_3
 
-#define aTune_en_Temp       40    //可以啟動AutoTune的最高溫度
+#define aTune_en_Temp       0    //可以啟動AutoTune的最高溫度
 #define MaxTemp             135   //過熱關閉加熱器溫度
 
 bool  Heating_Begin[4] = {false, false, false, false};
 int   HeatingTime_Counter[4] = {(-1), (-1), (-1), (-1)};
 
 //Log-----------------------
-bool  LogPrint_en = false;
-bool  DiffWriteIn[4] = {0, 0, 0, 0};
-bool  logdeg = false;
-bool  Negative = false;
-double diff_temp = 0;
-int degnum = 0;
-int diff_num = 0;
+bool    LogPrint_en = false;
+bool    DiffWriteIn[4] = {0, 0, 0, 0};
+bool    logdeg = false;
+bool    Negative = false;
+double  diff_temp = 0;
+int     degnum = 0;
+int     diff_num = 0;
 
 //Main----------------------
 void setup() {
   // put your setup code here, to run once:
+  Fan_setup();
   Serial_setup();
   TempIC_setup();
   Buzzer_setup();
   Mux_setup();
   PID_setup();
   Timer_setup();
-  Fan_setup();
 }
 
 void loop() {

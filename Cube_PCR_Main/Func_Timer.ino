@@ -11,15 +11,12 @@ void  Timer_Mux() {
 }
 
 void  Timer_Log() {
-  /*
-    Mux_Pin_Num = 0;
-    Mux_func(Mux_Pin_Num);
-  */
   Led_OFF();
   serial_RXD();
   if (LogPrint_en)
     serial_log();
-  Led_ON();
+  if (aTune_fin)
+    Led_ON();
 }
 
 void Timer_sec() {
