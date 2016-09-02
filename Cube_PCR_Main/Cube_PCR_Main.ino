@@ -7,8 +7,9 @@
     1.00      初版
     1.01      修改試管插入音效條件
     1.02      修改AutoTune參數
+    1.03      關閉AutoTune,固定PID值
 */
-#define Version         1.02
+#define Version         1.03
 
 //Pin define-----------------
 //Analog Pin
@@ -52,10 +53,10 @@ bool  button[4] = {false, false, false, false};
 int   button_disable_counter[4] = {0, 0, 0, 0};
 
 //Temp-----------------------
-#define TempIC_Diff_0   0
-#define TempIC_Diff_1   0
-#define TempIC_Diff_2   0
-#define TempIC_Diff_3   0
+#define TempIC_Diff_0   (-7)
+#define TempIC_Diff_1   (-7)
+#define TempIC_Diff_2   (-7)
+#define TempIC_Diff_3   (-7)
 
 #define TempIC_Type     1
 #define TempIC_base_0   500
@@ -76,6 +77,7 @@ bool    Temp_steady[4] =  {false, false, false, false};
 
 //PID-----------------------
 #define PIDSampleTime   100
+#define PIDOutputLimit  255
 #define aTune_well      0
 #define aTune_mode      false
 
@@ -83,25 +85,29 @@ bool    Temp_steady[4] =  {false, false, false, false};
 #define aKi   0
 #define aKd   0
 
+#define dKp   200
+#define dKi   20
+#define dKd   0
+
 //Well_0
-#define Kp_0   100
-#define Ki_0   0
-#define Kd_0   0
+#define Kp_0   dKp
+#define Ki_0   dKi
+#define Kd_0   dKd
 
 //Well_1
-#define Kp_1   100
-#define Ki_1   0
-#define Kd_1   0
+#define Kp_1   dKp
+#define Ki_1   dKi
+#define Kd_1   dKd
 
 //Well_2
-#define Kp_2   100
-#define Ki_2   0
-#define Kd_2   0
+#define Kp_2   dKp
+#define Ki_2   dKi
+#define Kd_2   dKd
 
 //Well_3
-#define Kp_3   100
-#define Ki_3   0
-#define Kd_3   0
+#define Kp_3   dKp
+#define Ki_3   dKi
+#define Kd_3   dKd
 
 #define aTuneStep       250
 #define aTuneNoise      0.5
@@ -124,35 +130,41 @@ PID PID3(&Temp[3], &Volt[3], &Tar[3], Kp[3], Ki[3], Kd[3], DIRECT);
 PID_ATune aTune(&Temp[aTune_well], &Volt[aTune_well]);
 
 //Heater--------------------
+//Default Setting
+#define HeatingTime_Def       900   //PCR反應時間(含預熱時間)
+#define PreHeatingTime_Def    60    //預熱時間
+#define PreHeatingTemp_Def    120   //預熱溫度
+#define HeatingTemp_Def       98   //PCR反應溫度
+
 //Channel 1 Setting
-#define HeatingTime_0       900   //PCR反應時間(含預熱時間)
-#define PreHeatingTime_0    60    //預熱時間
-#define PreHeatingTemp_0    120   //預熱溫度
-#define HeatingTemp_0       98   //PCR反應溫度
+#define HeatingTime_0       HeatingTime_Def   //PCR反應時間(含預熱時間)
+#define PreHeatingTime_0    PreHeatingTime_Def    //預熱時間
+#define PreHeatingTemp_0    PreHeatingTemp_Def   //預熱溫度
+#define HeatingTemp_0       HeatingTemp_Def   //PCR反應溫度
 #define ResponseTime_0      HeatingTime_0 - PreHeatingTime_0
 #define AtuneTemp_0         HeatingTemp_0
 
 //Channel 2 Setting
-#define HeatingTime_1       900   //PCR反應時間(含預熱時間)
-#define PreHeatingTime_1    60    //預熱時間
-#define PreHeatingTemp_1    120   //預熱溫度
-#define HeatingTemp_1       98   //PCR反應溫度
+#define HeatingTime_1       HeatingTime_Def   //PCR反應時間(含預熱時間)
+#define PreHeatingTime_1    PreHeatingTime_Def    //預熱時間
+#define PreHeatingTemp_1    PreHeatingTemp_Def   //預熱溫度
+#define HeatingTemp_1       HeatingTemp_Def   //PCR反應溫度
 #define ResponseTime_1      HeatingTime_1 - PreHeatingTime_1
 #define AtuneTemp_1         HeatingTemp_1
 
 //Channel 3 Setting
-#define HeatingTime_2       900   //PCR反應時間(含預熱時間)
-#define PreHeatingTime_2    60    //預熱時間
-#define PreHeatingTemp_2    120   //預熱溫度
-#define HeatingTemp_2       98   //PCR反應溫度
+#define HeatingTime_2       HeatingTime_Def   //PCR反應時間(含預熱時間)
+#define PreHeatingTime_2    PreHeatingTime_Def    //預熱時間
+#define PreHeatingTemp_2    PreHeatingTemp_Def   //預熱溫度
+#define HeatingTemp_2       HeatingTemp_Def   //PCR反應溫度
 #define ResponseTime_2      HeatingTime_2 - PreHeatingTime_2
 #define AtuneTemp_2         HeatingTemp_2
 
 //Channel 4 Setting
-#define HeatingTime_3       900   //PCR反應時間(含預熱時間)
-#define PreHeatingTime_3    60    //預熱時間
-#define PreHeatingTemp_3    120   //預熱溫度
-#define HeatingTemp_3       98   //PCR反應溫度
+#define HeatingTime_3       HeatingTime_Def   //PCR反應時間(含預熱時間)
+#define PreHeatingTime_3    PreHeatingTime_Def    //預熱時間
+#define PreHeatingTemp_3    PreHeatingTemp_Def   //預熱溫度
+#define HeatingTemp_3       HeatingTemp_Def   //PCR反應溫度
 #define ResponseTime_3      HeatingTime_3 - PreHeatingTime_3
 #define AtuneTemp_3         HeatingTemp_3
 
@@ -176,6 +188,8 @@ int   HeatingTime_Counter[4] = {(-1), (-1), (-1), (-1)};
 #define MuxGreLedPin1 13
 #define MuxGreLedPin2 14
 #define MuxGreLedPin3 15
+
+#define MuxFloatPin   4
 
 int Mux_Pin_Num = 0;
 

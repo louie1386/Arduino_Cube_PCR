@@ -36,5 +36,7 @@ void ReadyLed_chk() {
     ReadyLED_en = false;
   if (ReadyLED_en)
     Led_ON(ReadyLED);
+  else
+    Led_OFF(ReadyLED);
 }
 

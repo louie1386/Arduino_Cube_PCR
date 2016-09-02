@@ -1,15 +1,15 @@
 void PID_setup() {
   Temp[0] = Temp_avg(TIC0, SampleTimes, Temp_diff[0]);
-  PID0.SetOutputLimits(0, 255);
+  PID0.SetOutputLimits(0, PIDOutputLimit);
   PID0.SetSampleTime(PIDSampleTime);
   PID0.SetMode(AUTOMATIC);
-  PID1.SetOutputLimits(0, 255);
+  PID1.SetOutputLimits(0, PIDOutputLimit);
   PID1.SetSampleTime(PIDSampleTime);
   PID1.SetMode(AUTOMATIC);
-  PID2.SetOutputLimits(0, 255);
+  PID2.SetOutputLimits(0, PIDOutputLimit);
   PID2.SetSampleTime(PIDSampleTime);
   PID2.SetMode(AUTOMATIC);
-  PID3.SetOutputLimits(0, 255);
+  PID3.SetOutputLimits(0, PIDOutputLimit);
   PID3.SetSampleTime(PIDSampleTime);
   PID3.SetMode(AUTOMATIC);
 
@@ -118,3 +118,4 @@ void  PID3_Control() {
     Volt[3] = 0;
   analogWrite(Heater_3, Volt[3]);
 }
+

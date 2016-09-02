@@ -23,8 +23,9 @@ void button_check(int ch, int pin, int heatingTime, double preheatingTemp, doubl
     }
   }
   else if (button[ch] == false) {
-    if (button_disable_counter[ch])
+    if (button_disable_counter[ch] > 0) {
       button_disable_counter[ch]--;
+    }
     else {
       GreLED_en[ch] = false;
       Heating_Begin[ch] = false;
