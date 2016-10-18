@@ -8,8 +8,10 @@
     1.01      修改試管插入音效條件
     1.02      修改AutoTune參數
     1.03      關閉AutoTune,固定PID值
+    1.04      修改buzzer頻率，修改baudrate
+    1.05      輸出溫度補正值
 */
-#define Version         1.03
+#define Version         1.05
 
 //Pin define-----------------
 //Analog Pin
@@ -53,10 +55,10 @@ bool  button[4] = {false, false, false, false};
 int   button_disable_counter[4] = {0, 0, 0, 0};
 
 //Temp-----------------------
-#define TempIC_Diff_0   (-7)
-#define TempIC_Diff_1   (-7)
-#define TempIC_Diff_2   (-7)
-#define TempIC_Diff_3   (-7)
+#define TempIC_Diff_0   6
+#define TempIC_Diff_1   5
+#define TempIC_Diff_2   7
+#define TempIC_Diff_3   5
 
 #define TempIC_Type     1
 #define TempIC_base_0   500
@@ -134,7 +136,7 @@ PID_ATune aTune(&Temp[aTune_well], &Volt[aTune_well]);
 #define HeatingTime_Def       900   //PCR反應時間(含預熱時間)
 #define PreHeatingTime_Def    60    //預熱時間
 #define PreHeatingTemp_Def    120   //預熱溫度
-#define HeatingTemp_Def       98   //PCR反應溫度
+#define HeatingTemp_Def       102   //PCR反應溫度
 
 //Channel 1 Setting
 #define HeatingTime_0       HeatingTime_Def   //PCR反應時間(含預熱時間)
@@ -175,7 +177,7 @@ bool  Heating_Begin[4] = {false, false, false, false};
 int   HeatingTime_Counter[4] = {(-1), (-1), (-1), (-1)};
 
 //Buzzer--------------------
-#define buzzer_Hz 2093
+#define buzzer_Hz 4978
 #define buzzer_ms 500
 
 //Mux-----------------------

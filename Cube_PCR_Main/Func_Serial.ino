@@ -1,5 +1,5 @@
 void Serial_setup() {
-  Serial.begin(9600);
+  Serial.begin(250000);
   Serial.println("");
   Serial.print("Start/Reset (Version: ");
   Serial.print(Version);
@@ -14,6 +14,8 @@ void serial_log() {
     serial_LogDoubleAlign(Temp[i]);
     Serial.print(" <");
     serial_LogDoubleAlign(Tar[i]);
+    Serial.print(", ");
+    serial_LogDoubleAlign(Temp_diff[i]);
     Serial.print(">, ");
     serial_LogDoubleAlign(Volt[i]);
     Serial.print("(byte-V)]--PID(");
@@ -34,10 +36,13 @@ void serial_log() {
 }
 
 void serial_LogDoubleAlign(double value) {
-  if (value < 10)
-    Serial.print("  ");
-  else if (value < 100)
-    Serial.print(" ");
+  if (value > 0)
+  {
+    if (value < 10)
+      Serial.print("  ");
+    else if (value < 100)
+      Serial.print(" ");
+  }
   Serial.print(value);
 }
 
